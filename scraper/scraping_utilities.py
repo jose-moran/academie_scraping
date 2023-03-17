@@ -19,14 +19,16 @@ def get_versions(url: str):
     labels = [v["aria-label"] for v in versions]
     version_words = [get_version_word(v_url) for v_url in version_urls]
     version_years = [get_year(label) for label in labels]
-    next_url = get_next_url(html, current_word=version_words[-1])
+    next_url = get_next_url(html)
     return version_words, version_years, next_url
 
 
-def get_next_url(html: BeautifulSoup, current_word):
-    voisinages = html.find("div", {"id": "voisinage"}).find_all("a")
-    words = [v.text.split(',')[0].split(' ')[0] for v in voisinages]
-    i = words.index(current_word)
+def get_next_url(html: BeautifulSoup):
+    voisinages = html.find("div", {"id": "voisinage"})
+    mot_actif = voisinages.find('li', attrs={'class': 'motActif'}).text.split(',')[0].lstrip()
+    voisinages = voisinages.find_all("a")
+    words = [v.text.split(',')[0] for v in voisinages]
+    i = words.index(mot_actif)
     if i == len(voisinages) - 1:
         return "END"
     else:

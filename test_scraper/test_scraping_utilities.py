@@ -29,11 +29,11 @@ def test_get_versions(roi_url):
 def test_next_url(roi_url):
     query = requests.get(roi_url)
     html = BeautifulSoup(query.text)
-    assert get_next_url(html, "roi") == "https://www.dictionnaire-academie.fr/article/A9R2840"
+    assert get_next_url(html) == "https://www.dictionnaire-academie.fr/article/A9R2840"
 
     query2 = requests.get("https://www.dictionnaire-academie.fr/article/A6Z0043*")
     html = BeautifulSoup(query2.text)
-    assert get_next_url(html, "zymotechnie") == "END"
+    assert get_next_url(html) == "END"
 
 def test_article_id(roi_url):
     assert get_article_id(roi_url) == "A9R2839"
