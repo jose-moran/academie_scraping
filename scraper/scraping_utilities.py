@@ -33,7 +33,7 @@ def get_next_url(html: BeautifulSoup):
         return "END"
     else:
         next_article_id = voisinages[i + 1]["href"].split('/')[-1]
-        return f"https://www.dictionnaire-academie.fr/{next_article_id}"
+        return f"https://www.dictionnaire-academie.fr/article/{next_article_id}"
 
 
 def get_version_word(v_url: str):
