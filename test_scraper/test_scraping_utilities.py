@@ -39,6 +39,9 @@ def test_next_url(roi_url):
     html = BeautifulSoup(query3.text)
     assert get_next_url(html) == "https://www.dictionnaire-academie.fr/article/A9A0002"
 
+    query4 = requests.get("https://www.dictionnaire-academie.fr/article/A9A0144")
+    html = BeautifulSoup(query4.text)
+    assert get_next_url(html) == "https://www.dictionnaire-academie.fr/article/A9A0145*"
 
 def test_article_id(roi_url):
     assert get_article_id(roi_url) == "A9R2839"

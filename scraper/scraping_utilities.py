@@ -32,8 +32,8 @@ def get_next_url(html: BeautifulSoup):
     if i == len(voisinages) - 1:
         return "END"
     else:
-        next_article = re.search("/article/(\w*)", voisinages[i + 1]["href"]).group(0)
-        return f"https://www.dictionnaire-academie.fr{next_article}"
+        next_article_id = voisinages[i + 1]["href"].split('/')[-1]
+        return f"https://www.dictionnaire-academie.fr/{next_article_id}"
 
 
 def get_version_word(v_url: str):
