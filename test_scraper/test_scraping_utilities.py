@@ -2,7 +2,7 @@ import pytest
 import requests
 from bs4 import BeautifulSoup
 
-from scraper.scraping_utilities import get_year, get_version_word, get_versions, get_next_url
+from scraper.scraping_utilities import get_year, get_version_word, get_versions, get_next_url, get_article_id
 
 
 @pytest.fixture(name="roi_url")
@@ -34,3 +34,6 @@ def test_next_url(roi_url):
     query2 = requests.get("https://www.dictionnaire-academie.fr/article/A6Z0043*")
     html = BeautifulSoup(query2.text)
     assert get_next_url(html, "zymotechnie") == "END"
+
+def test_article_id(roi_url):
+    assert get_article_id(roi_url) == "A9R2839"
