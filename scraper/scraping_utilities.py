@@ -25,15 +25,19 @@ def get_versions(url: str):
 
 def get_next_url(html: BeautifulSoup):
     voisinages = html.find("div", {"id": "voisinage"})
-    mot_actif = voisinages.find('li', attrs={'class': 'motActif'}).text.split(',')[0].lstrip()
+    mot_actif = voisinages.find('li', attrs={'class': 'motActif'}).text.lstrip()
     voisinages = voisinages.find_all("a")
-    words = [v.text.split(',')[0] for v in voisinages]
-    i = words.index(mot_actif)
+    words = [v.text for v in voisinages]
+    try:
+        i = words.index(mot_actif)
+    except:
+        i = 11
     if i == len(voisinages) - 1:
         return "END"
     else:
         next_article_id = voisinages[i + 1]["href"].split('/')[-1]
         return f"https://www.dictionnaire-academie.fr/article/{next_article_id}"
+
 
 
 def get_version_word(v_url: str):
