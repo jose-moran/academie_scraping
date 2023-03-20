@@ -11,7 +11,8 @@ def get_year(aria_label: str):
         return int(search.group(0))
 
 
-def get_versions(url: str):
+def get_versions(article_id: str):
+    url = f"https://www.dictionnaire-academie.fr/article/{article_id}"
     query = requests.get(url)
     html = BeautifulSoup(query.text)
     versions = html.find("div", {"id": "versions"}).find_all('a')
@@ -19,24 +20,15 @@ def get_versions(url: str):
     labels = [v["aria-label"] for v in versions]
     version_words = [get_version_word(v_url) for v_url in version_urls]
     version_years = [get_year(label) for label in labels]
-    next_url = get_next_url(html)
-    return version_words, version_years, next_url
+    return {"words": version_words, "years": version_years}
 
 
-def get_next_url(html: BeautifulSoup):
+def get_voisinages(article_id: str):
+    url = f"https://www.dictionnaire-academie.fr/article/{article_id}"
+    query = requests.get(url)
+    html = BeautifulSoup(query.text)
     voisinages = html.find("div", {"id": "voisinage"})
-    mot_actif = voisinages.find('li', attrs={'class': 'motActif'}).text.lstrip()
-    voisinages = voisinages.find_all("a")
-    words = [v.text for v in voisinages]
-    try:
-        i = words.index(mot_actif)
-    except:
-        i = 11
-    if i == len(voisinages) - 1:
-        return "END"
-    else:
-        next_article_id = voisinages[i + 1]["href"].split('/')[-1]
-        return f"https://www.dictionnaire-academie.fr/article/{next_article_id}"
+    return [v["href"].split('/')[-1] for v in voisinages.find_all("a")]
 
 
 
