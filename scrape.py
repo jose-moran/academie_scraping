@@ -22,8 +22,8 @@ while keep_going:
             last_prev_edition = list(filter(lambda x: x.startswith('A8'), scrape_dict.keys()))[-1]
             new_prev_tag = int(re.match(r"A8[A-Z]([0-9]*)", last_prev_edition).groups(0)[0])+1
             new_prev_tag = str(new_prev_tag).zfill(4)
-            new_id = f"A9A{new_tag}"
-            new_prev_id = f"A8A{new_prev_tag}"
+            new_id = f"{last_current_edition[:3]}{new_tag}"
+            new_prev_id = f"{last_prev_edition[:3]}{new_prev_tag}"
             url1 = f"https://www.dictionnaire-academie.fr/article/{new_id}"
             query1 = requests.get(url1)
             url2 = f"https://www.dictionnaire-academie.fr/article/{new_prev_id}"
